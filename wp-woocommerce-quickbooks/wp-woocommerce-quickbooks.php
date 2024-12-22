@@ -2,7 +2,7 @@
 /*
 * Plugin Name: Integration for WooCommerce and QuickBooks
 * Description: Integrates WooCommerce with QuickBooks allowing new orders to be automatically sent to your QuickBooks account.
-* Version: 1.2.9
+* Version: 1.3.0
 * Requires at least: 4.7
 * Plugin URI: https://www.crmperks.com/plugins/woocommerce-plugins/woocommerce-quickbooks-integration/
 * Author URI: https://www.crmperks.com
@@ -21,7 +21,7 @@ class vxc_qbooks{
   public $id='vxc_qbooks';
   public $domain='vxc-qbooks';
   public $crm_name='quickbooks';
-  public $version = '1.2.9';
+  public $version = '1.3.0';
   public $min_wc_version = '3.0';
   public $update_id = '50001';
   public $type = 'vxc_qbooks_pro';
@@ -92,7 +92,7 @@ self::$is_pr=true;
   add_action( 'woocommerce_order_status_changed',array($this,'status_changed'), 10, 3 );
   add_action( 'woocommerce_subscription_status_updated',array($this,'status_changed_subscription'), 10, 3 );
   add_action( 'woocommerce_checkout_update_order_meta',array($this,'order_submit'), 20 ); 
-   add_action( 'woocommerce_new_order',array($this,'order_submit_new') ); //order_id
+   add_action( 'woocommerce_new_order',array($this,'order_submit_new'),10,2 ); //order_id
 add_action( 'profile_update',array($this,'profile_update'), 999 );
 add_action('save_post_product',array($this,'save_product'),999,2);
 
@@ -345,7 +345,7 @@ $res=$this->push($post_id,'save_product');
     //  $status="user_created";    
   $this->push($id,$status);
   }
-    public function order_submit_new($id){ 
+    public function order_submit_new($id,$order){ 
       if($this->do_actions()){ 
 do_action('vx_addons_save_entry',$id,'','wc','');         
       }
@@ -1286,7 +1286,9 @@ if($status == 'admin_sub'){
         if(in_array($status,array('save_user'))){
    self::$_order=get_user_by('id',esc_attr($order_id)); 
    }else{
-        
+          if(empty($post_id)){ //$post_id is empty with bulk product update
+   $post_id=$order_id;    
+   }   
        if($post_id){    
     self::$order=$order=get_post_meta($order_id);  
    } 
@@ -1318,8 +1320,8 @@ if(!$is_subscription){
    }
  
    $date= current_time( 'mysql' );
-  if(method_exists(self::$_order,'get_date_created')){
-  $date=self::$_order->get_date_created()->date('d-M-Y H:i:s');
+  if(method_exists(self::$_order,'get_date_created') && !empty(self::$_order->get_date_created())){  
+  $date=self::$_order->get_date_created()->date('d-M-Y H:i:s'); //self::$_order->get_date_created() becomes null on saving shipping line
   } 
   self::$order['_order_date']=$date;
 

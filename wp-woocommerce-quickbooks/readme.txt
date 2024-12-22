@@ -3,10 +3,10 @@ Contributors: crmperks, sbazzi, asif876
 Tags: quickbooks, woocommerce quickbooks integration, woocommerce quickbooks, quickbooks online and woocommerce, connect woocommerce to quickbooks
 Requires at least: 3.8
 Tested up to: 6.7
-Stable tag: 1.2.9
-Version: 1.2.9
+Stable tag: 1.3.0
+Version: 1.3.0
 WC requires at least: 3.0
-WC tested up to: 9.4
+WC tested up to: 9.5
 Requires PHP: 5.3
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
@@ -129,6 +129,9 @@ Yes, your data is absolutely secure when pluing transfers it to Quickbooks. When
 
 
 == Changelog ==
+
+= 1.3.0 =
+* fixed "product meta fields empty with bulk sync" issue.
 
 = 1.2.9 =
 * fixed "woo variation name" issue.

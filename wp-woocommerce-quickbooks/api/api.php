@@ -335,8 +335,6 @@ $json['estimate']='{
     "CustomField_1": "Custom Field 1",  
     "CustomField_2": "Custom Field 2",  
     "CustomField_3": "Custom Field 3",  
-    "CustomField_4": "Custom Field 4",  
-    "CustomField_5": "Custom Field 5",  
     "Id": "ID (Do not map this field in feed)", 
     "TxnTaxDetail_TotalTax": "Total Tax",
     "vx_shipping_line": "Shipping Total",

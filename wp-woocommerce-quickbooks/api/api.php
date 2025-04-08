@@ -185,7 +185,6 @@ $qbooks_res=$this->post_crm($dev_key,$url,$method,$body,$head);
 //$qbooks_response=json_decode($qbooks_res,true); 
   }
   }
-  
   $this->api_res=$qbooks_res; 
   return $qbooks_res;   
   }
@@ -335,6 +334,8 @@ $json['estimate']='{
     "CustomField_1": "Custom Field 1",  
     "CustomField_2": "Custom Field 2",  
     "CustomField_3": "Custom Field 3",  
+    "CustomField_4": "Custom Field 4",  
+    "CustomField_5": "Custom Field 5",  
     "Id": "ID (Do not map this field in feed)", 
     "TxnTaxDetail_TotalTax": "Total Tax",
     "vx_shipping_line": "Shipping Total",
@@ -422,8 +423,10 @@ $arr["TrackingNum"]= "Tracking Num";
   $arr['ExpirationDate']='Expiration Date';   
   $arr['ShipDate_date']='Shipping Date';   
   $arr['TrackingNum']='Tracking Number';
+  $arr['SalesTermRef_value']='Term';
       $arr['TxnStatus']=array('label'=>'Txn Status','options'=>array("Accepted", "Closed", "Pending", "Rejected" ));   
 }else if($object == 'invoice'){
+    $arr['SalesTermRef_value']='Term';
  $arr["TrackingNum"]= "Tracking Num";  
  $arr["Deposit"]= "Deposit"; 
 }else if($object == 'payment'){
@@ -476,6 +479,9 @@ $arr["TrackingNum"]= "Tracking Num";
       } 
       if($k == 'AssetAccountRef_value'){
    $field['options']=$this->get_accounts('asset');       
+      }
+      if($k == 'SalesTermRef_value'){
+   $field['options']=$this->get_list('Term');       
       }  
       if(in_array($k,array('SalesTaxCodeRef_value','PurchaseTaxCodeRef_value')) ){
    $field['options']=$this->get_list('TaxCode');     
@@ -567,12 +573,13 @@ $q='select * from SalesReceipt';
 //$q='select * from Deposit';
 $q='select * from Invoice';
 $q='select * from Item';
+$q='select * from Term';
 //$q='select * from Estimate';
 $search_res=$this->post_crm_arr('query','get',array('query'=>$q)); 
-echo json_encode($search_res); die();
+echo json_encode($search_res); die();*/
  
  //$res=$this->post_crm_arr('invoice/231');   
- //$res=$this->post_crm_arr('item/40');    var_dump($res); die();*/
+ //$res=$this->post_crm_arr('item/40');    var_dump($res); die();
  
   $fields_info=array();  $extra=$post=$qres=array();
   $id=$token=""; $note=array(); $error=""; $action=""; $link=""; $search=$search_response=$status=""; 

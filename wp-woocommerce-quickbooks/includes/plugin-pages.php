@@ -1108,6 +1108,7 @@ $this->send_order_admin($id);
     $offset=$this->time_offset();
    $log_ids=array();
   if($bulk_action!=""){
+      check_admin_referer('vx_nonce','vx_nonce');
    $log_id=$this->post('log_id');  
    $table=$this->get_table_name(); 
    if(is_array($log_id) && count($log_id)>0){

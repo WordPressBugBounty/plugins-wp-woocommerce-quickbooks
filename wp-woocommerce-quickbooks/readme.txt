@@ -3,8 +3,8 @@ Contributors: crmperks, sbazzi, asif876
 Tags: quickbooks, woocommerce quickbooks integration, woocommerce quickbooks, quickbooks online and woocommerce, connect woocommerce to quickbooks
 Requires at least: 3.8
 Tested up to: 6.7
-Stable tag: 1.3.1
-Version: 1.3.1
+Stable tag: 1.3.2
+Version: 1.3.2
 WC requires at least: 3.0
 WC tested up to: 9.7
 Requires PHP: 5.3
@@ -133,6 +133,10 @@ Yes, your data is absolutely secure when pluing transfers it to Quickbooks. When
 
 
 == Changelog ==
+
+= 1.3.2 =
+* added "invoice Term field" feature.
+* fixed "CSRF issue with logs page".
 
 = 1.3.1 =
 * added "phone and product ID" fields.

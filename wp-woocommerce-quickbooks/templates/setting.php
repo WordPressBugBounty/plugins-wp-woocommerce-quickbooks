@@ -123,7 +123,7 @@ echo '<option value="'.$k.'" '.$sel.'>'.$v.'</option>';
         if(!empty($info['env'])){ $redir.='&vx_env=test'; }
   $test_link='https://appcenter.intuit.com/app/connect/oauth2?response_type=code&state='.urlencode($redir).'&client_id='.$client['client_id'].'&scope=com.intuit.quickbooks.accounting&redirect_uri='.urlencode($client['call_back']);  
   ?>
-  <a class="button button-default button-hero sf_login" id="vx_login_btn" data-id="<?php echo esc_html($client['client_id']) ?>" href="<?php echo $test_link ?>"> <i class="fa fa-lock"></i> <?php esc_html_e("Login with QuickBooks",'wp-woocommerce-quickbooks'); ?></a>
+  <a class="button button-default button-hero sf_login" id="vx_login_btn" data-id="<?php echo esc_html($client['client_id']) ?>" href="<?php echo $test_link ?>"> <i class="fa fa-lock"></i> <?php esc_html_e("Connect QuickBooks",'wp-woocommerce-quickbooks'); ?></a>
 <?php
 $error='';
 if(!empty($info['error'])){

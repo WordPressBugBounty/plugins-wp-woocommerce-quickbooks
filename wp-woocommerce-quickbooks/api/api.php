@@ -151,7 +151,7 @@ public  function post_crm_arr($path,$method='get',$body="",$head=array()){
 if(!isset($info['realmid']) || empty($info['realmid'])){
     return array(array( 'errorCode'=>'2005' , 'message'=>__('No Access to QuickBooks API - 2005','gravity-forms-quickbooks-crm')));
 }
-  $url=$this->url.'/v3/company/'.$info['realmid'].'/'.$path.'?minorversion=38';
+  $url=$this->url.'/v3/company/'.$info['realmid'].'/'.$path.'?minorversion=75'; //using minor versions is optional. it is better to stick to one version
   if($method == 'delete'){
      $url.='&operation=delete';
      $method='post'; 

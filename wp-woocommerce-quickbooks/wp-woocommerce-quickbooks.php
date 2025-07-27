@@ -2,7 +2,7 @@
 /*
 * Plugin Name: Integration for WooCommerce and QuickBooks
 * Description: Integrates WooCommerce with QuickBooks allowing new orders to be automatically sent to your QuickBooks account.
-* Version: 1.3.2
+* Version: 1.3.3
 * Requires at least: 4.7
 * Plugin URI: https://www.crmperks.com/plugins/woocommerce-plugins/woocommerce-quickbooks-integration/
 * Author URI: https://www.crmperks.com
@@ -21,7 +21,7 @@ class vxc_qbooks{
   public $id='vxc_qbooks';
   public $domain='vxc-qbooks';
   public $crm_name='quickbooks';
-  public $version = '1.3.2';
+  public $version = '1.3.3';
   public $min_wc_version = '3.0';
   public $update_id = '50001';
   public $type = 'vxc_qbooks_pro';

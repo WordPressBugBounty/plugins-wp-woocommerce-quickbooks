@@ -2,7 +2,7 @@
 /*
 * Plugin Name: Integration for WooCommerce and QuickBooks
 * Description: Integrates WooCommerce with QuickBooks allowing new orders to be automatically sent to your QuickBooks account.
-* Version: 1.3.3
+* Version: 1.3.4
 * Requires at least: 4.7
 * Plugin URI: https://www.crmperks.com/plugins/woocommerce-plugins/woocommerce-quickbooks-integration/
 * Author URI: https://www.crmperks.com
@@ -21,7 +21,7 @@ class vxc_qbooks{
   public $id='vxc_qbooks';
   public $domain='vxc-qbooks';
   public $crm_name='quickbooks';
-  public $version = '1.3.3';
+  public $version = '1.3.4';
   public $min_wc_version = '3.0';
   public $update_id = '50001';
   public $type = 'vxc_qbooks_pro';
@@ -108,15 +108,7 @@ if(is_admin()){
   load_plugin_textdomain('wp-woocommerce-quickbooks', FALSE, $this->plugin_dir_name() . '/languages/' );
       self::$db_version=get_option($this->type."_version"); 
   if( self::$db_version != $this->version && current_user_can( 'manage_options' )){
-       self::$path=$this->get_base_path();
-  include_once(self::$path . "includes/install.php");
-  $class=$this->id.'_install';
-  $install=new $class();
-  $install->create_tables();
-  $install->create_roles();
-  update_option($this->type."_version", $this->version);
-  $log_str="Installing WooCommerce QuickBooks Plugin version=".$this->version;
-  $this->log_msg($log_str);
+$this->install_plugin();
   }
    }
  add_action(
@@ -143,6 +135,15 @@ if($start_instance){
 self::$plugin->instance();
 }
 } }
+public function install_plugin(){
+self::$path=$this->get_base_path();
+  include_once(self::$path . "includes/install.php");
+  $class=$this->id.'_install';
+  $install=new $class();
+  $install->create_tables();
+  $install->create_roles();
+  update_option($this->type."_version", $this->version);
+}
 
   /**
 * Woocommerce status
@@ -500,7 +501,7 @@ $info['meta']=is_array($meta) ? $meta : array();
   */
   public function activate(){
 $this->plugin_api(true);
-
+$this->install_plugin();
 do_action('plugin_status_'.$this->type,'activate'); 
   }
  public function do_actions(){

@@ -45,6 +45,7 @@ color: #727f30; font-size: 18px; vertical-align: middle;
 <h2 style="font-size: 22px;">Premium Version</h2>
 <p><i class="fa fa-check"></i> Create SalesReceipt, Estimate, Credit Memo, Payment in QuickBooks.</p>
 <p><i class="fa fa-check"></i> QuickBooks Phone Number fields and Custom fields.</p>
+<p><i class="fa fa-check"></i> QuickBooks developer app for Production environment.</p>
 <p><i class="fa fa-check"></i> Advanced Tax mapping from WooCommerce to Quickbooks.</p>
 <p><i class="fa fa-check"></i> Set Custom Line Item Description from WooCommerce to Quickbooks.</p>
 <p><i class="fa fa-check"></i> Send Invoice, SalesReceipt, Estimate, Credit Memo, Payment to customer email address.</p>

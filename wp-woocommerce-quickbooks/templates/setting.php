@@ -2,7 +2,7 @@
 if ( ! defined( 'ABSPATH' ) ) {
      exit;
  }  
- $dis='';
+ $dis=''; $dev_app=apply_filters('vxc_qbooks_developer_app', array('client_id'=>'ABdYeOCC2zgBh2gWSZekcrDdN6IYRPStfVP7W5R8MdwEXXO3V0','client_secret'=>'lLu7bTjwJG6l7qKnFPAEK68vzaNh3kJvVTn324DI'));
  if(  !empty($info['access_token'])){ $dis='disabled="disabled"'; }                                       
  ?><h3><?php echo sprintf(__("Account ID# %d",'wp-woocommerce-quickbooks'),esc_attr($id));
 if($new_account_id != $id){
@@ -57,7 +57,12 @@ echo '<option value="'.$k.'" '.$sel.'>'.$v.'</option>';
      <div class="vx_tr">
   <div class="vx_td">
   <input type="password" id="app_id" name="crm[app_id]" class="crm_text" <?php echo $dis; ?> required placeholder="<?php esc_html_e("Client ID",'wp-woocommerce-quickbooks'); ?>" value="<?php echo esc_attr($this->post('app_id',$info)); ?>">
-    <span class="howto"><?php esc_html_e('if you do not want to use Own developer app, simply use CRMPerks app, client ID = Q0FacGTHBIT64MjlfDOnvYdnRneuT1ra7RZ0EELV5Ke6YB3xCD ','wp-woocommerce-quickbooks'); ?></span>
+    <div class="howto"><?php echo sprintf(__('CRM Perks developer app for Quickbooks %s evironment, Premium version app works with Quickbooks %s evironment ','wp-woocommerce-quickbooks'),'<code>Sandbox</code>','<code>Production</code>'); ?></div>
+      <ul style="margin-top: 2px; margin-left: 20px; list-style: disc;">
+  <li><?php echo __('Client ID : ','wp-woocommerce-quickbooks').$dev_app['client_id']; ?></li>
+  <li><?php echo __('Client Secret :  ','wp-woocommerce-quickbooks').$dev_app['client_secret']; ?></li>
+  <li><?php echo __('Redirect URI : https://www.crmperks.com/sf_auth ','wp-woocommerce-quickbooks'); ?></li>
+   </ul>
   </div><div class="vx_td2">
   <a href="#" class="button vx_toggle_btn vx_toggle_key" title="<?php esc_html_e('Toggle Consumer Key','wp-woocommerce-quickbooks'); ?>"><?php esc_html_e('Show Key','wp-woocommerce-quickbooks') ?></a>
   
@@ -89,7 +94,6 @@ echo '<option value="'.$k.'" '.$sel.'>'.$v.'</option>';
        <div class="vx_tr" >
   <div class="vx_td">
  <input type="password" id="app_secret" name="crm[app_secret]"  class="crm_text" <?php echo $dis; ?> required  placeholder="<?php esc_html_e("Client Secret",'wp-woocommerce-quickbooks'); ?>" value="<?php echo esc_attr($this->post('app_secret',$info)); ?>">
- <span class="howto"><?php esc_html_e("CRMPerks app Client Secret = ZKcYJ2rdLIJ1u1XKKU0VJQW2qguu84NyCKZKG3Bg ",'wp-woocommerce-quickbooks'); ?></span>
   </div><div class="vx_td2">
   <a href="#" class="button vx_toggle_btn vx_toggle_key" title="<?php esc_html_e('Toggle Consumer Secret','wp-woocommerce-quickbooks'); ?>"><?php esc_html_e('Show Key','wp-woocommerce-quickbooks') ?></a>
   
@@ -100,7 +104,6 @@ echo '<option value="'.$k.'" '.$sel.'>'.$v.'</option>';
        <div class="crm_field">
   <div class="crm_field_cell1"><label for="app_url"><?php esc_html_e("Redirect URI",'wp-woocommerce-quickbooks'); ?></label></div>
   <div class="crm_field_cell2"><input type="text" id="app_url" name="crm[app_url]" <?php echo $dis; ?> required class="crm_text" placeholder="<?php esc_html_e("QuickBooks Redirect URI",'wp-woocommerce-quickbooks'); ?>" value="<?php echo esc_attr($this->post('app_url',$info)); ?>"> 
-<span class="howto"><?php esc_html_e("CRMPerks app Rerdirect URI = https://www.crmperks.com/sf_auth ",'wp-woocommerce-quickbooks'); ?></span>
   </div>
   <div class="clear"></div>
   </div>

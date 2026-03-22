@@ -2,11 +2,11 @@
 Contributors: crmperks, sbazzi, asif876
 Tags: quickbooks, woocommerce quickbooks integration, woocommerce quickbooks, quickbooks online and woocommerce, connect woocommerce to quickbooks
 Requires at least: 3.8
-Tested up to: 6.9
-Stable tag: 1.3.4
-Version: 1.3.4
+Tested up to: 6.5
+Stable tag: 1.2.7
+Version: 1.2.7
 WC requires at least: 3.0
-WC tested up to: 10.4
+WC tested up to: 8.7
 Requires PHP: 5.3
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
@@ -101,10 +101,6 @@ You can find Screenshots for Creating Quickbooks APP at [crmperks.com](https://w
 
 Our team provides free support at <a href="https://www.crmperks.com/contact-us/">https://www.crmperks.com/contact-us/</a>.
 
-= is plugin compatible with Woocommerce HPOS feature? =
-
-WooCommerce QuickBooks Integration has been tested with latest version of woocommerce and it is fully compatible with Woocommerce High-Performance Order Storage (HPOS) feature.
-
 = WooCommerce QuickBooks Integration =
 * Simply Connect QuickBooks account to WooCommerce.
 * Go to QuickBooks feeds, create a feed then map WooCommerce Order fields to QuickBooks fields.
@@ -133,29 +129,6 @@ Yes, your data is absolutely secure when pluing transfers it to Quickbooks. When
 
 
 == Changelog ==
-
-= 1.3.4 =
-* fixed "recreate missing db tables and permissions" issue.
-* fixed "QB developer app" issue.
-
-= 1.3.3 =
-* fixed "API minor version" issue.
-
-= 1.3.2 =
-* added "invoice Term field" feature.
-* fixed "CSRF issue with logs page".
-
-= 1.3.1 =
-* added "phone and product ID" fields.
-
-= 1.3.0 =
-* fixed "product meta fields empty with bulk sync" issue.
-
-= 1.2.9 =
-* fixed "woo variation name" issue.
-
-= 1.2.8 =
-* fixed "order fee empty" issue.
 
 = 1.2.7 =
 * fixed "order update from log" issue.

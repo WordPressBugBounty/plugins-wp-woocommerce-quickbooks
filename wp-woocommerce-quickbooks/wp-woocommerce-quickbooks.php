@@ -2,13 +2,15 @@
 /*
 * Plugin Name: Integration for WooCommerce and QuickBooks
 * Description: Integrates WooCommerce with QuickBooks allowing new orders to be automatically sent to your QuickBooks account.
-* Version: 1.3.4
+* Version: 1.2.7
 * Requires at least: 4.7
+* Tested up to: 6.5
+* WC tested up to: 8.7
 * Plugin URI: https://www.crmperks.com/plugins/woocommerce-plugins/woocommerce-quickbooks-integration/
 * Author URI: https://www.crmperks.com
 * Author: CRM Perks
 *
-* Copyright: © 2025 CRM Perks
+* Copyright: © 2022 CRM Perks
 * 
 */ 
 // Exit if accessed directly
@@ -21,7 +23,7 @@ class vxc_qbooks{
   public $id='vxc_qbooks';
   public $domain='vxc-qbooks';
   public $crm_name='quickbooks';
-  public $version = '1.3.4';
+  public $version = '1.2.7';
   public $min_wc_version = '3.0';
   public $update_id = '50001';
   public $type = 'vxc_qbooks_pro';
@@ -92,7 +94,7 @@ self::$is_pr=true;
   add_action( 'woocommerce_order_status_changed',array($this,'status_changed'), 10, 3 );
   add_action( 'woocommerce_subscription_status_updated',array($this,'status_changed_subscription'), 10, 3 );
   add_action( 'woocommerce_checkout_update_order_meta',array($this,'order_submit'), 20 ); 
-   add_action( 'woocommerce_new_order',array($this,'order_submit_new'),10,2 ); //order_id
+   add_action( 'woocommerce_new_order',array($this,'order_submit_new') ); //order_id
 add_action( 'profile_update',array($this,'profile_update'), 999 );
 add_action('save_post_product',array($this,'save_product'),999,2);
 
@@ -108,7 +110,15 @@ if(is_admin()){
   load_plugin_textdomain('wp-woocommerce-quickbooks', FALSE, $this->plugin_dir_name() . '/languages/' );
       self::$db_version=get_option($this->type."_version"); 
   if( self::$db_version != $this->version && current_user_can( 'manage_options' )){
-$this->install_plugin();
+       self::$path=$this->get_base_path();
+  include_once(self::$path . "includes/install.php");
+  $class=$this->id.'_install';
+  $install=new $class();
+  $install->create_tables();
+  $install->create_roles();
+  update_option($this->type."_version", $this->version);
+  $log_str="Installing WooCommerce QuickBooks Plugin version=".$this->version;
+  $this->log_msg($log_str);
   }
    }
  add_action(
@@ -135,15 +145,6 @@ if($start_instance){
 self::$plugin->instance();
 }
 } }
-public function install_plugin(){
-self::$path=$this->get_base_path();
-  include_once(self::$path . "includes/install.php");
-  $class=$this->id.'_install';
-  $install=new $class();
-  $install->create_tables();
-  $install->create_roles();
-  update_option($this->type."_version", $this->version);
-}
 
   /**
 * Woocommerce status
@@ -346,7 +347,7 @@ $res=$this->push($post_id,'save_product');
     //  $status="user_created";    
   $this->push($id,$status);
   }
-    public function order_submit_new($id,$order){ 
+    public function order_submit_new($id){ 
       if($this->do_actions()){ 
 do_action('vx_addons_save_entry',$id,'','wc','');         
       }
@@ -501,7 +502,7 @@ $info['meta']=is_array($meta) ? $meta : array();
   */
   public function activate(){
 $this->plugin_api(true);
-$this->install_plugin();
+
 do_action('plugin_status_'.$this->type,'activate'); 
   }
  public function do_actions(){
@@ -901,10 +902,9 @@ if($note['status'] == '1'){
   * 
   * @param mixed $f_key
   */
- public function order_info_fields($f_key=""){
+public function order_info_fields($f_key=""){
          $_order=self::$_order;
          $val="";
-
         switch($f_key){
             case"_order_total": $val=$_order->get_total(); break;
             case"_order_subtotal": $val=$_order->get_subtotal(); break;
@@ -952,7 +952,6 @@ if($note['status'] == '1'){
               }
              break;
             default:
-            
 if(in_array($f_key,array('_order_fees_total','_order_fees_total_tax','_order_fees_total_shipping'))){
 $fees=$_order->get_fees();
 $val=$valt=0;
@@ -1013,9 +1012,7 @@ else if(in_array($f_key,array('_order_items_skus','_order_items_titles','_order_
           if(count($info)>0){
            $skus=array(); $titles=$qtys=array();
             foreach($info as $meta){
-                if(isset($meta['SKU'])){
-                $skus[]=$meta['SKU']; 
-                }
+                $skus[]=$meta['SKU'];
                 $titles[]=$meta['Title'];
                 $qtys[]=$meta['Title'].'('.$meta['Quantity'].')';
              if(!empty($val)){
@@ -1033,7 +1030,7 @@ else if(in_array($f_key,array('_order_items_skus','_order_items_titles','_order_
           }
 
             }
-else if( strpos($f_key,'__vxo') !== false && !isset(self::$order[ '__vxo_last_order_number' ]) ){
+if( strpos($f_key,'__vxo') !== false && !isset(self::$order[ '__vxo_last_order_number' ]) ){
              $customer_orders=array();
             $user_id = $_order->get_user_id();
             if(!empty($user_id)){  
@@ -1149,12 +1146,11 @@ else if(is_object($_order) && method_exists($_order,'get_meta')){
             }
   
      }else{ 
-  $val=$_order->get_meta($f_key);    
-     
+  $val=$_order->get_meta($f_key);       
      }
      
 }       
-if(isset(self::$order[$f_key])){
+ if(isset(self::$order[$f_key])){
   $val=self::$order[$f_key];  
 }
          $f_key='';  
@@ -1214,7 +1210,6 @@ return $results;
   */
   public function push($order_id,$status="user",$log=array()){ 
 
-      
   $log_id=''; self::$processing_feed=true; 
   if(is_array($log) && !empty($log)){
       if(isset($log['id'])){
@@ -1287,9 +1282,7 @@ if($status == 'admin_sub'){
         if(in_array($status,array('save_user'))){
    self::$_order=get_user_by('id',esc_attr($order_id)); 
    }else{
-          if(empty($post_id)){ //$post_id is empty with bulk product update
-   $post_id=$order_id;    
-   }   
+        
        if($post_id){    
     self::$order=$order=get_post_meta($order_id);  
    } 
@@ -1321,8 +1314,8 @@ if(!$is_subscription){
    }
  
    $date= current_time( 'mysql' );
-  if(method_exists(self::$_order,'get_date_created') && !empty(self::$_order->get_date_created())){  
-  $date=self::$_order->get_date_created()->date('d-M-Y H:i:s'); //self::$_order->get_date_created() becomes null on saving shipping line
+  if(method_exists(self::$_order,'get_date_created')){
+  $date=self::$_order->get_date_created()->date('d-M-Y H:i:s');
   } 
   self::$order['_order_date']=$date;
 

@@ -2,7 +2,7 @@
 if ( ! defined( 'ABSPATH' ) ) {
      exit;
  }  
- $dis=''; $dev_app=apply_filters('vxc_qbooks_developer_app', array('client_id'=>'ABdYeOCC2zgBh2gWSZekcrDdN6IYRPStfVP7W5R8MdwEXXO3V0','client_secret'=>'lLu7bTjwJG6l7qKnFPAEK68vzaNh3kJvVTn324DI'));
+ $dis='';
  if(  !empty($info['access_token'])){ $dis='disabled="disabled"'; }                                       
  ?><h3><?php echo sprintf(__("Account ID# %d",'wp-woocommerce-quickbooks'),esc_attr($id));
 if($new_account_id != $id){
@@ -46,7 +46,7 @@ echo '<option value="'.$k.'" '.$sel.'>'.$v.'</option>';
   </div>
   <div class="crm_field_cell2">
   <input type="text" name="crm[ap_url]" placeholder="https://c26.qbo.intuit.com" <?php echo $dis; ?> required value="<?php echo $this->post('ap_url',$info); ?>" id="ap_url" class="crm_text">
-<span class="howto"><?php esc_html_e("Login your Quickbooks account , copy part of URL from browser e.g https://c26.qbo.intuit.com ",'wp-woocommerce-quickbooks'); ?></span>
+
   </div>
   <div class="clear"></div>
   </div>
@@ -57,12 +57,6 @@ echo '<option value="'.$k.'" '.$sel.'>'.$v.'</option>';
      <div class="vx_tr">
   <div class="vx_td">
   <input type="password" id="app_id" name="crm[app_id]" class="crm_text" <?php echo $dis; ?> required placeholder="<?php esc_html_e("Client ID",'wp-woocommerce-quickbooks'); ?>" value="<?php echo esc_attr($this->post('app_id',$info)); ?>">
-    <div class="howto"><?php echo sprintf(__('CRM Perks developer app for Quickbooks %s evironment, Premium version app works with Quickbooks %s evironment ','wp-woocommerce-quickbooks'),'<code>Sandbox</code>','<code>Production</code>'); ?></div>
-      <ul style="margin-top: 2px; margin-left: 20px; list-style: disc;">
-  <li><?php echo __('Client ID : ','wp-woocommerce-quickbooks').$dev_app['client_id']; ?></li>
-  <li><?php echo __('Client Secret :  ','wp-woocommerce-quickbooks').$dev_app['client_secret']; ?></li>
-  <li><?php echo __('Redirect URI : https://www.crmperks.com/sf_auth ','wp-woocommerce-quickbooks'); ?></li>
-   </ul>
   </div><div class="vx_td2">
   <a href="#" class="button vx_toggle_btn vx_toggle_key" title="<?php esc_html_e('Toggle Consumer Key','wp-woocommerce-quickbooks'); ?>"><?php esc_html_e('Show Key','wp-woocommerce-quickbooks') ?></a>
   
@@ -104,6 +98,7 @@ echo '<option value="'.$k.'" '.$sel.'>'.$v.'</option>';
        <div class="crm_field">
   <div class="crm_field_cell1"><label for="app_url"><?php esc_html_e("Redirect URI",'wp-woocommerce-quickbooks'); ?></label></div>
   <div class="crm_field_cell2"><input type="text" id="app_url" name="crm[app_url]" <?php echo $dis; ?> required class="crm_text" placeholder="<?php esc_html_e("QuickBooks Redirect URI",'wp-woocommerce-quickbooks'); ?>" value="<?php echo esc_attr($this->post('app_url',$info)); ?>"> 
+
   </div>
   <div class="clear"></div>
   </div>
@@ -126,7 +121,7 @@ echo '<option value="'.$k.'" '.$sel.'>'.$v.'</option>';
         if(!empty($info['env'])){ $redir.='&vx_env=test'; }
   $test_link='https://appcenter.intuit.com/app/connect/oauth2?response_type=code&state='.urlencode($redir).'&client_id='.$client['client_id'].'&scope=com.intuit.quickbooks.accounting&redirect_uri='.urlencode($client['call_back']);  
   ?>
-  <a class="button button-default button-hero sf_login" id="vx_login_btn" data-id="<?php echo esc_html($client['client_id']) ?>" href="<?php echo $test_link ?>"> <i class="fa fa-lock"></i> <?php esc_html_e("Connect QuickBooks",'wp-woocommerce-quickbooks'); ?></a>
+  <a class="button button-default button-hero sf_login" id="vx_login_btn" data-id="<?php echo esc_html($client['client_id']) ?>" href="<?php echo $test_link ?>"> <i class="fa fa-lock"></i> <?php esc_html_e("Login with QuickBooks",'wp-woocommerce-quickbooks'); ?></a>
 <?php
 $error='';
 if(!empty($info['error'])){

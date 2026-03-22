@@ -151,7 +151,7 @@ public  function post_crm_arr($path,$method='get',$body="",$head=array()){
 if(!isset($info['realmid']) || empty($info['realmid'])){
     return array(array( 'errorCode'=>'2005' , 'message'=>__('No Access to QuickBooks API - 2005','gravity-forms-quickbooks-crm')));
 }
-  $url=$this->url.'/v3/company/'.$info['realmid'].'/'.$path.'?minorversion=75'; //using minor versions is optional. it is better to stick to one version
+  $url=$this->url.'/v3/company/'.$info['realmid'].'/'.$path.'?minorversion=38';
   if($method == 'delete'){
      $url.='&operation=delete';
      $method='post'; 
@@ -185,6 +185,7 @@ $qbooks_res=$this->post_crm($dev_key,$url,$method,$body,$head);
 //$qbooks_response=json_decode($qbooks_res,true); 
   }
   }
+  
   $this->api_res=$qbooks_res; 
   return $qbooks_res;   
   }
@@ -334,8 +335,6 @@ $json['estimate']='{
     "CustomField_1": "Custom Field 1",  
     "CustomField_2": "Custom Field 2",  
     "CustomField_3": "Custom Field 3",  
-    "CustomField_4": "Custom Field 4",  
-    "CustomField_5": "Custom Field 5",  
     "Id": "ID (Do not map this field in feed)", 
     "TxnTaxDetail_TotalTax": "Total Tax",
     "vx_shipping_line": "Shipping Total",
@@ -423,10 +422,8 @@ $arr["TrackingNum"]= "Tracking Num";
   $arr['ExpirationDate']='Expiration Date';   
   $arr['ShipDate_date']='Shipping Date';   
   $arr['TrackingNum']='Tracking Number';
-  $arr['SalesTermRef_value']='Term';
       $arr['TxnStatus']=array('label'=>'Txn Status','options'=>array("Accepted", "Closed", "Pending", "Rejected" ));   
 }else if($object == 'invoice'){
-    $arr['SalesTermRef_value']='Term';
  $arr["TrackingNum"]= "Tracking Num";  
  $arr["Deposit"]= "Deposit"; 
 }else if($object == 'payment'){
@@ -479,9 +476,6 @@ $arr["TrackingNum"]= "Tracking Num";
       } 
       if($k == 'AssetAccountRef_value'){
    $field['options']=$this->get_accounts('asset');       
-      }
-      if($k == 'SalesTermRef_value'){
-   $field['options']=$this->get_list('Term');       
       }  
       if(in_array($k,array('SalesTaxCodeRef_value','PurchaseTaxCodeRef_value')) ){
    $field['options']=$this->get_list('TaxCode');     
@@ -532,7 +526,6 @@ return $arr;
   */
 public function push_object($object,$fields,$meta){
 
-       
     /*
     $json='{"Name":"WooCommerce Zoho Pluginx","Type":"Inventory","QtyOnHand":50,"Sku":"vxg-zoho-maina","UnitPrice":10,"AssetAccountRef":{"value":162},"Description":"ccc","IncomeAccountRef":{"value":128},"TrackQtyOnHand":true,"InvStartDate":"2021-01-01"}';
     $json1='{
@@ -573,13 +566,12 @@ $q='select * from SalesReceipt';
 //$q='select * from Deposit';
 $q='select * from Invoice';
 $q='select * from Item';
-$q='select * from Term';
 //$q='select * from Estimate';
 $search_res=$this->post_crm_arr('query','get',array('query'=>$q)); 
-echo json_encode($search_res); die();*/
+echo json_encode($search_res); die();
  
  //$res=$this->post_crm_arr('invoice/231');   
- //$res=$this->post_crm_arr('item/40');    var_dump($res); die();
+ //$res=$this->post_crm_arr('item/40');    var_dump($res); die();*/
  
   $fields_info=array();  $extra=$post=$qres=array();
   $id=$token=""; $note=array(); $error=""; $action=""; $link=""; $search=$search_response=$status=""; 
@@ -977,13 +969,13 @@ if(!empty($arr['re']['item_id'])){ $re[$arr['re']['item_id']]=$arr['re']; $produ
 
      // append variation names ,  $item->get_name() does not support more than 3 variation names
           $attrs=$product->get_attributes(); //$item->get_formatted_meta_data( '' )
-            $var_info=array(); 
+            $var_info=array();
              if(is_array($attrs) && count($attrs)>0){
                  
              $name=$product->get_title();    
                  foreach($attrs as $attr_key=>$attr_val){
                     // $att_name=wc_attribute_label($attr_key,$product);
-                     $term = get_term_by( 'slug', $attr_val, $attr_key ); 
+                     $term = get_term_by( 'slug', $attr_val, $attr_key );
                  if ( taxonomy_exists( $attr_key ) ) {
                 $term = get_term_by( 'slug', $attr_val, $attr_key );
                 if ( ! is_wp_error( $term ) && is_object( $term ) && $term->name ) {
@@ -994,7 +986,7 @@ if(!empty($arr['re']['item_id'])){ $re[$arr['re']['item_id']]=$arr['re']; $produ
             $var_info[]=$attr_val;
             }    
                  }
-             } 
+             }
           if(!empty($var_info)){
           $name.=' '.implode(', ',$var_info);    
           }  
@@ -1062,8 +1054,7 @@ $_order=self::$_order;
        $total=$_order->get_item_subtotal($item,false,true);
     }
 $extra=$re=array();
-$product_name=$product->get_title(); //disabled @ jun-24 , variations may have same SKU , change name for each variation , create new item in QB for each variation
-$product_name=$name;
+$product_name=$product->get_title();
 $product_name=substr($product_name,0,100);
 $q="select * from Item Where ";
 if(empty($meta['item_match'])){
